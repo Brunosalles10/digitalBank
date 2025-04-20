@@ -1,1 +1,1 @@
-# digitalBank
+# Bank Digital
