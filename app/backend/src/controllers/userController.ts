@@ -7,7 +7,7 @@ export const getAll = async (req: Request, res: Response) => {
 };
 
 export const getUserById = async (
-  req: Request<{ id: number }>,
+  req: Request<{ id: string }>,
   res: Response
 ) => {
   const user = await UserModel.findByPk(req.params.id);
@@ -43,7 +43,7 @@ export const createUser = async (req: Request, res: Response) => {
 };
 
 export const updateUser = async (
-  req: Request<{ id: number }>,
+  req: Request<{ id: string }>,
   res: Response
 ) => {
   try {
@@ -86,7 +86,7 @@ export const updateUser = async (
 };
 
 export const deleteUserById = async (
-  req: Request<{ id: number }>,
+  req: Request<{ id: string }>,
   res: Response
 ) => {
   try {
