@@ -8,7 +8,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Env files (segredos)
+# Env files 
 .env
 .env.* 
 
@@ -20,10 +20,10 @@ build/
 *.tsbuildinfo
 tsconfig.json
 
-# VSCode configs (se não quiser versionar)
+# VSCode configs 
 .vscode/
 
-# Pasta do banco de dados local (caso use SQLite por exemplo)
+# Pasta do banco de dados local 
 *.sqlite
 *.sqlite3
 
@@ -31,5 +31,4 @@ tsconfig.json
 .DS_Store
 Thumbs.db
 
-# Configuração de banco que você mencionou
-src/config/database.ts
+

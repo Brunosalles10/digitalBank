@@ -8,7 +8,7 @@ import {
 } from "../controllers/userController";
 
 const router = express.Router();
-
+//routes for user
 router.get("/users", getAll);
 router.get("/users/:id", getUserById);
 router.post("/users", createUser);

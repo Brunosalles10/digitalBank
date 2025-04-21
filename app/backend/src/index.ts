@@ -1,13 +1,15 @@
 import express from "express";
 import sequelize from "./config/database";
+import loginRoutes from "./routes/loginRoutes";
 import userRoutes from "./routes/userRoutes";
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 //routes
 app.use(userRoutes);
+app.use(loginRoutes);
 
 //sync database
 sequelize

@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../config/database";
 
@@ -8,6 +9,14 @@ class UserModel extends Model {
   password: string | undefined;
   cpf: string | undefined;
   phone: string | undefined;
+
+  public async hasPassword() {
+    this.password = await bcrypt.hash(this.password!, 10);
+  }
+
+  public async validatePassword(password: string) {
+    return await bcrypt.compare(password, this.password!);
+  }
 }
 
 UserModel.init(
@@ -47,4 +56,15 @@ UserModel.init(
     timestamps: true,
   }
 );
+
+UserModel.beforeCreate(async (user: UserModel) => {
+  await user.hasPassword();
+});
+
+UserModel.beforeUpdate(async (user: UserModel) => {
+  if (user.changed("password")) {
+    await user.hasPassword();
+  }
+});
+
 export default UserModel;
