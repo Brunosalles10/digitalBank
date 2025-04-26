@@ -1,5 +1,6 @@
 import express from "express";
 import sequelize from "./config/database";
+import accountRoutes from "./routes/accountRoutes";
 import loginRoutes from "./routes/loginRoutes";
 import userRoutes from "./routes/userRoutes";
 
@@ -10,6 +11,7 @@ app.use(express.json());
 //routes
 app.use(userRoutes);
 app.use(loginRoutes);
+app.use(accountRoutes);
 
 //sync database
 sequelize
