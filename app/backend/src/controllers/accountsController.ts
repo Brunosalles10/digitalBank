@@ -49,6 +49,7 @@ export const createAccount = async (req: Request, res: Response) => {
     });
     return res.status(201).json(account);
   } catch (error) {
+    console.error(error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };

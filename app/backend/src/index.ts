@@ -1,7 +1,9 @@
 import express from "express";
 import sequelize from "./config/database";
 import accountRoutes from "./routes/accountRoutes";
+import depositRoutes from "./routes/depositRoutes";
 import loginRoutes from "./routes/loginRoutes";
+import transactionRoutes from "./routes/transactionRoutes";
 import userRoutes from "./routes/userRoutes";
 
 const app = express();
@@ -12,6 +14,8 @@ app.use(express.json());
 app.use(userRoutes);
 app.use(loginRoutes);
 app.use(accountRoutes);
+app.use(transactionRoutes);
+app.use(depositRoutes);
 
 //sync database
 sequelize

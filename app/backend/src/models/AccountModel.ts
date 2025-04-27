@@ -23,7 +23,7 @@ AccountModel.init(
     },
     accountNumber: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
       unique: true,
       validate: {
         len: [10, 20],
