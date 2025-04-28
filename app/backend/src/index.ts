@@ -3,6 +3,7 @@ import sequelize from "./config/database";
 import accountRoutes from "./routes/accountRoutes";
 import depositRoutes from "./routes/depositRoutes";
 import loginRoutes from "./routes/loginRoutes";
+import paymentRoutes from "./routes/paymentRoutes";
 import transactionRoutes from "./routes/transactionRoutes";
 import userRoutes from "./routes/userRoutes";
 
@@ -16,6 +17,7 @@ app.use(loginRoutes);
 app.use(accountRoutes);
 app.use(transactionRoutes);
 app.use(depositRoutes);
+app.use(paymentRoutes);
 
 //sync database
 sequelize
