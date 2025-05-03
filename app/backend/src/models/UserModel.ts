@@ -33,7 +33,6 @@ UserModel.init(
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
     },
     password: {
       type: DataTypes.STRING,
@@ -42,7 +41,6 @@ UserModel.init(
     cpf: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
     },
     phone: {
       type: DataTypes.STRING,
@@ -54,6 +52,16 @@ UserModel.init(
     modelName: "UserModel",
     tableName: "users",
     timestamps: true,
+    indexes: [
+      {
+        unique: true,
+        fields: ["email"],
+      },
+      {
+        unique: true,
+        fields: ["cpf"],
+      },
+    ],
   }
 );
 

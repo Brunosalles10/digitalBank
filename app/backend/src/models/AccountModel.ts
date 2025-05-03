@@ -24,7 +24,6 @@ AccountModel.init(
     accountNumber: {
       type: DataTypes.STRING,
       allowNull: true,
-      unique: true,
       validate: {
         len: [10, 20],
       },
@@ -47,6 +46,12 @@ AccountModel.init(
     modelName: "AccountModel",
     tableName: "accounts",
     timestamps: true,
+    indexes: [
+      {
+        unique: true,
+        fields: ["accountNumber"],
+      },
+    ],
   }
 );
 

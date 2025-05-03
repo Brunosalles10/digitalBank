@@ -1,6 +1,7 @@
 import express from "express";
 import sequelize from "./config/database";
 import accountRoutes from "./routes/accountRoutes";
+import cardRoutes from "./routes/cardRoutes";
 import depositRoutes from "./routes/depositRoutes";
 import loginRoutes from "./routes/loginRoutes";
 import paymentRoutes from "./routes/paymentRoutes";
@@ -18,6 +19,7 @@ app.use(accountRoutes);
 app.use(transactionRoutes);
 app.use(depositRoutes);
 app.use(paymentRoutes);
+app.use(cardRoutes);
 
 //sync database
 sequelize
