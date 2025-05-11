@@ -1,11 +1,16 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
+import Home from "./pages/Home";
 
 function App() {
   return (
-    <div className="text-center">
-      <h1>Olá Mundo!</h1>
-      <button className=" bg-sky-500 hover:bg-sky-700 ...">Save changes</button>
-    </div>
+    <BrowserRouter>
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+        <Routes>
+          <Route path="/" element={<Home />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
 

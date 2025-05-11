@@ -15,7 +15,6 @@ vite.config.ts
 tsconfig.json
 tsconfig.node.json
 tsconfig.app.json
-README.md
 package-lock.json
 package.json
 eslint.config.js
