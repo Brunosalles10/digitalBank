@@ -1,6 +1,29 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignUp = () => {
+  const navigate = useNavigate();
+  const [password, setPassword] = useState("");
+  const [passwordStrength, setPasswordStrength] = useState("");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Aqui você pode adicionar a lógica para enviar os dados do formulário
+    // Por exemplo, fazer uma requisição para a API para criar a conta
+    console.log("Formulário enviado");
+    navigate("/login");
+  };
+
+  const validatePasswordStrength = (value: string) => {
+    const strongRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+    if (strongRegex.test(value)) {
+      setPasswordStrength("Forte");
+    } else {
+      setPasswordStrength("Fraca");
+    }
+  };
+
   return (
     <section className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <div className="bg-white shadow-lg rounded-xl p-8 w-full max-w-md">
@@ -11,7 +34,7 @@ const SignUp = () => {
           Preencha os dados para abrir sua conta no Solid Bank
         </p>
 
-        <form className="space-y-5">
+        <form className="space-y-5" onSubmit={handleSubmit}>
           {/* Nome completo */}
           <div>
             <label
@@ -94,9 +117,25 @@ const SignUp = () => {
               type="password"
               id="password"
               placeholder="Crie uma senha"
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                validatePasswordStrength(e.target.value);
+              }}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600"
               required
             />
+            {password && (
+              <p
+                className={`mt-1 text-sm font-medium ${
+                  passwordStrength === "Forte"
+                    ? "text-green-600"
+                    : "text-red-600"
+                }`}
+              >
+                Senha {passwordStrength}
+              </p>
+            )}
           </div>
 
           {/* Confirmação de senha */}
