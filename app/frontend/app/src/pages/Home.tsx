@@ -1,14 +1,17 @@
+import Footer from "./homePages/footer";
 import NavBar from "./homePages/navBar";
+import PagePrimary from "./homePages/pagePrimary";
+import PageSecundary from "./homePages/pageSecundary";
+import PageTertiary from "./homePages/pageTertiary";
 
 const Home = () => {
   return (
     <>
       <NavBar />
-
-      <div>
-        <h1>Welcome to the Home Page</h1>
-        <p>This is the home page of our application.</p>
-      </div>
+      <PagePrimary />
+      <PageSecundary />
+      <PageTertiary />
+      <Footer />
     </>
   );
 };
