@@ -1,6 +1,45 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import { getErrorMessage } from "../hooks/Errors";
+import api from "../services/api";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const { login } = useAuth();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    if (!email || !password) {
+      setError("Por favor, preencha todos os campos.");
+      setLoading(false);
+      return;
+    }
+    try {
+      const response = await api.post("/login", {
+        email,
+        password,
+      });
+      const { token, userId, userName } = response.data;
+      login(token, userId, userName);
+
+      setEmail("");
+      setPassword("");
+      navigate(`/dashboard/${userId}`);
+    } catch (error) {
+      setError(getErrorMessage(error));
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <section className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <div className="bg-white shadow-lg rounded-xl p-8 w-full max-w-md">
@@ -11,7 +50,13 @@ const Login = () => {
           Acesse sua conta Solid Bank
         </p>
 
-        <form className="space-y-6">
+        <form className="space-y-6" onSubmit={handleSubmit}>
+          {error && (
+            <div className="bg-red-100 text-red-700 p-4 rounded-lg mb-4">
+              {error}
+            </div>
+          )}
+          {/* Nome */}
           {/* Email */}
           <div>
             <label
@@ -26,6 +71,8 @@ const Login = () => {
               placeholder="seuemail@email.com"
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600"
               required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
 
@@ -43,12 +90,15 @@ const Login = () => {
               placeholder="••••••••"
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600"
               required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
 
           {/* Botão */}
           <button
             type="submit"
+            disabled={loading}
             className="w-full bg-violet-700 text-white py-3 rounded-lg font-semibold hover:bg-violet-400 transition duration-500 cursor-pointer"
           >
             Entrar

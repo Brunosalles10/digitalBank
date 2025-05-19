@@ -1,3 +1,5 @@
+import cors from "cors";
+import dotenv from "dotenv";
 import express from "express";
 import sequelize from "./config/database";
 import accountRoutes from "./routes/accountRoutes";
@@ -8,8 +10,15 @@ import paymentRoutes from "./routes/paymentRoutes";
 import transactionRoutes from "./routes/transactionRoutes";
 import userRoutes from "./routes/userRoutes";
 
+dotenv.config();
+
 const app = express();
 const PORT = process.env.PORT || 3000;
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN || "*",
+  })
+);
 app.use(express.json());
 
 //routes
