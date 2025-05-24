@@ -1,10 +1,12 @@
-import CardActions from "./dashbordPages/CardActions";
-import CardBalance from "./dashbordPages/CardBalance";
-import CardVirtualCard from "./dashbordPages/CardVirtualCard";
-import Sidebar from "./dashbordPages/sidebar";
+import Sidebar from "../components/sidebar";
+import { useAuth } from "../contexts/AuthContext";
+import CardActions from "./dashbordPages/cardActions";
+import CardBalance from "./dashbordPages/cardBalance";
+import CardVirtualCard from "./dashbordPages/cardVirtualCard";
 import TransactionList from "./dashbordPages/transactionList";
 const Dashbord = () => {
-  const userName = "John Doe";
+  const { userName } = useAuth();
+
   return (
     <>
       <div className="flex min-h-screen">
@@ -13,7 +15,9 @@ const Dashbord = () => {
           {/* TÍTULO */}
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Visão geral</h1>
-            <p className="text-gray-600">Olá {userName}, bem-vindo de volta!</p>
+            <p className="text-gray-600">
+              Olá {userName}, bem-vindo a sua conta digital!
+            </p>
           </div>
           {/* GRID DE CARDS SUPERIORES */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

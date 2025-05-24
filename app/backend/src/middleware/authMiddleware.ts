@@ -1,6 +1,17 @@
 import { NextFunction, Request, Response } from "express";
 import { verifyToken } from "../utils/jwt";
 
+declare global {
+  namespace Express {
+    interface Request {
+      user?: {
+        id: number;
+        name: string;
+      };
+    }
+  }
+}
+
 export const authMiddleware = (
   req: Request,
   res: Response,
@@ -16,7 +27,10 @@ export const authMiddleware = (
 
   try {
     const decoded = verifyToken(token);
-    req.body.user = decoded;
+    req.user =
+      typeof decoded === "object" && decoded !== null
+        ? (decoded as any)
+        : undefined;
     next();
   } catch (error) {
     return res.status(401).json({ message: "Invalid token." });

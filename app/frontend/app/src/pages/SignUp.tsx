@@ -1,4 +1,5 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import FormInput from "../components/FormInputs";
 import { getErrorMessage } from "../hooks/Errors";
@@ -14,8 +15,6 @@ const SignUp = () => {
     password: "",
     confirmPassword: "",
   });
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState("");
 
@@ -45,26 +44,25 @@ const SignUp = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
 
     const { name, email, cpf, phone, password, confirmPassword } = form;
 
     if (Object.values(form).some((v) => !v))
-      return setError("Preencha todos os campos.");
+      return toast.error("Preencha todos os campos.");
     if (password !== confirmPassword)
-      return setError("As senhas não coincidem.");
+      return toast.error("As senhas não coincidem.");
     if (passwordStrength !== "Forte")
-      return setError("A senha precisa ser forte.");
+      return toast.error("A senha precisa ser forte.");
     if (!email.includes("@") || !email.includes("."))
-      return setError("Email inválido.");
+      return toast.error("Email inválido.");
 
     try {
       setLoading(true);
       await api.post("/users", { name, email, cpf, phone, password });
-      setSuccess("Cadastro realizado com sucesso!");
+      toast.success("Cadastro realizado com sucesso!");
       setTimeout(() => navigate("/login"), 5000);
     } catch (err) {
-      setError(getErrorMessage(err));
+      toast.error(getErrorMessage(err));
     } finally {
       setLoading(false);
     }
@@ -81,13 +79,6 @@ const SignUp = () => {
         </p>
 
         <form className="space-y-4" onSubmit={handleSubmit}>
-          {error && (
-            <p className="bg-red-100 text-red-700 p-2 rounded">{error}</p>
-          )}
-          {success && (
-            <p className="bg-green-100 text-green-700 p-2 rounded">{success}</p>
-          )}
-
           <FormInput
             id="name"
             label="Nome completo"

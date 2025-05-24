@@ -3,14 +3,17 @@ import {
   FaCog,
   FaCreditCard,
   FaHome,
+  FaLock,
   FaLongArrowAltUp,
   FaUniversity,
   FaUsers,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import logo from "../../assets/logoSolidBank.png";
+import logo from "../assets/logoSolidBank.png";
+import { useAuth } from "../contexts/AuthContext";
 
 const Sidebar = () => {
+  const { logout } = useAuth();
   return (
     <aside className="w-64 min-h-screen bg-violet-700 text-white flex flex-col justify-between py-6 px-4">
       {/* TOPO: LOGO */}
@@ -22,7 +25,7 @@ const Sidebar = () => {
         {/* MENU PRINCIPAL */}
         <nav className="space-y-2">
           <Link
-            to="/dashboard"
+            to="/dashboard/:userId"
             className="flex items-center gap-3 px-4 py-3 rounded-lg bg-violet-600 font-medium hover:bg-violet-500 transition"
           >
             <FaHome />
@@ -30,7 +33,7 @@ const Sidebar = () => {
           </Link>
 
           <Link
-            to="/clients"
+            to="/editprofile/:userId"
             className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-violet-500 transition"
           >
             <FaUsers />
@@ -60,7 +63,16 @@ const Sidebar = () => {
             Transações
           </Link>
           <Link
-            to="/logout"
+            to="/changepassword/:userId"
+            className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-violet-500 transition"
+          >
+            <FaLock />
+            Alterar Senha
+          </Link>
+
+          <Link
+            to="/"
+            onClick={logout}
             className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-violet-500 transition"
           >
             <FaLongArrowAltUp />
