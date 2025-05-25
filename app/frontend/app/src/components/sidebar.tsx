@@ -56,7 +56,7 @@ const Sidebar = () => {
           </Link>
 
           <Link
-            to="/transactions"
+            to="/accounts/transactions/:userId"
             className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-violet-500 transition"
           >
             <FaChartBar />

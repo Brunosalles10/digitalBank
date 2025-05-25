@@ -35,6 +35,7 @@ const AccountPage = () => {
         setLoading(true);
         const { data } = await api.get(`/accounts/user/${userId}`);
         setAccounts(data);
+        setError("");
       } catch (err) {
         const error = err as AxiosError;
         if (error.response?.status === 404) {
@@ -58,6 +59,8 @@ const AccountPage = () => {
         type: "current",
       });
       setAccounts([response.data]);
+      setError("");
+      toast.success("Conta criada com sucesso!");
     } catch (err) {
       toast.error(getErrorMessage(err));
     }
@@ -98,7 +101,11 @@ const AccountPage = () => {
         {account && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Card: Dados da Conta */}
-            <Card icon={<FaUser />} title="Dados da Conta">
+            <Card
+              icon={<FaUser />}
+              title="Dados da Conta"
+              to="/accounts/settings/:userId"
+            >
               <p>
                 <strong>Número Da Conta:</strong> {account.accountNumber}
               </p>
@@ -112,24 +119,41 @@ const AccountPage = () => {
             <BalanceCard />
 
             {/* Card: Depósitos */}
-            <Card icon={<FaMoneyCheck />} title="Depósitos" to="/deposit">
+            <Card
+              icon={<FaMoneyCheck />}
+              title="Depósitos"
+              to="/accounts/deposit/:userId"
+            >
               <p className="text-sm text-gray-600">
                 Acesse a seção de depósito para adicionar saldo.
               </p>
             </Card>
 
             {/* Card: Transferências */}
-            <Card icon={<FaExchangeAlt />} title="Transferências">
+            <Card
+              icon={<FaExchangeAlt />}
+              title="Transferências"
+              to="/accounts/transfer/:userId"
+            >
               <p className="text-sm text-gray-600">
-                Gerencie envios e recebimentos entre contas.
+                Realize suas transferências aqui.
               </p>
             </Card>
 
             {/* Card: Pagamentos */}
-            <Card icon={<FaFileInvoiceDollar />} title="Pagamentos">
-              <p className="text-sm text-gray-600">
-                Histórico de boletos e cobranças pagas.
-              </p>
+            <Card
+              icon={<FaFileInvoiceDollar />}
+              title="Pagamentos"
+              to="/accounts/payment/:userId"
+            >
+              <p className="text-sm text-gray-600">Pague suas contas aqui.</p>
+            </Card>
+            <Card
+              icon={<FaFileInvoiceDollar />}
+              title="Extrato"
+              to="/accounts/transactions/:userId"
+            >
+              <p className="text-sm text-gray-600">Veja seu extrato aqui.</p>
             </Card>
           </div>
         )}

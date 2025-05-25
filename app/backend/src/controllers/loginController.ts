@@ -8,17 +8,17 @@ export const loginUser = async (req: Request, res: Response) => {
     if (!email || !password) {
       return res
         .status(400)
-        .json({ message: "Email and password are required" });
+        .json({ message: "Email e senha são obrigatórios" });
     }
     const user = await UserModel.findOne({ where: { email } });
     if (!user) {
-      return res.status(404).json({ message: "User  not found" });
+      return res.status(404).json({ message: "Usuario não encontrado" });
     }
     const isPasswordValid = await user.validatePassword(password);
     if (!isPasswordValid) {
       return res
         .status(401)
-        .json({ message: "Email or password is incorrect" });
+        .json({ message: "Email ou senha estão incorretos" });
     }
     // Returns a JWT token
     const token = generateToken(user);

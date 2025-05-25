@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import sequelize from "sequelize";
 import TransactionModel from "../models/TransactionModel";
 import { TransferService } from "../services/transfer.service";
 
@@ -30,6 +31,34 @@ export const getTransactionById = async (
     return res.status(500).json({ error: "Internal server error" });
   }
 };
+
+export const getTransactionsByUserId = async (
+  req: Request<{ userId: string }>,
+  res: Response
+) => {
+  try {
+    const userId = Number(req.params.userId);
+
+    // Pega todas as transações onde o user é remetente ou destinatário
+    const transactions = await TransactionModel.findAll({
+      where: {
+        [sequelize.Op.or]: [
+          { senderAccountId: userId },
+          { receiverAccountId: userId },
+        ],
+      },
+      order: [["createdAt", "DESC"]],
+    });
+
+    return res.status(200).json(transactions);
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: "Erro ao buscar transações do usuário" });
+  }
+};
+
 export const createTransaction = async (req: Request, res: Response) => {
   try {
     const {

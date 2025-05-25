@@ -1,4 +1,8 @@
-import { FaExchangeAlt, FaPiggyBank } from "react-icons/fa";
+import {
+  FaExchangeAlt,
+  FaFileInvoiceDollar,
+  FaPiggyBank,
+} from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const CardActions = () => {
@@ -10,18 +14,25 @@ const CardActions = () => {
       <h3 className="text-gray-600 text-sm">Ações rápidas</h3>
       <div className="flex flex-col gap-3 w-full">
         <Link
-          to="/transfer"
+          to="/accounts/transfer/:userId"
           className="flex items-center justify-center gap-2 bg-violet-700 text-white py-2 px-4 rounded-lg hover:bg-violet-400 transition"
         >
           <FaExchangeAlt />
           Transferir
         </Link>
         <Link
-          to="/deposit"
+          to="/accounts/deposit/:userId"
           className="flex items-center justify-center gap-2 bg-violet-700 text-white py-2 px-4 rounded-lg hover:bg-violet-400 transition"
         >
           <FaPiggyBank />
           Depositar
+        </Link>
+        <Link
+          to="/accounts/payment/:userId"
+          className="flex items-center justify-center gap-2 bg-violet-700 text-white py-2 px-4 rounded-lg hover:bg-violet-400 transition"
+        >
+          {<FaFileInvoiceDollar />}
+          Pagamentos
         </Link>
       </div>
     </div>
