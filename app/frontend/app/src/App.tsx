@@ -2,6 +2,7 @@ import { Toaster } from "react-hot-toast";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import "./App.css";
 import PrivateRoute from "./hooks/PrivateRoute";
+import AccountPages from "./pages/accountPages/Account";
 import ChangePassword from "./pages/ChangePassword";
 import Dashbord from "./pages/Dashbord";
 import EditProfile from "./pages/EditProfile";
@@ -20,6 +21,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
+
           {/*ROTAS PRIVADAS*/}
           <Route
             element={
@@ -30,6 +32,9 @@ function App() {
           >
             <Route path="/dashboard/:userId" element={<Dashbord />} />
             <Route path="/editprofile/:userId" element={<EditProfile />} />
+            <Route path="/accounts/user/:userId" element={<AccountPages />} />
+
+            {/* Rota para alterar senha */}
             <Route
               path="/changepassword/:userId"
               element={<ChangePassword />}

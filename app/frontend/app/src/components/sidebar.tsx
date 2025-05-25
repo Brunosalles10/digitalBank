@@ -40,11 +40,11 @@ const Sidebar = () => {
             Meu Dados
           </Link>
           <Link
-            to="/accounts"
+            to="/accounts/user/:userId"
             className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-violet-500 transition"
           >
             <FaUniversity />
-            Contas
+            Conta
           </Link>
 
           <Link
