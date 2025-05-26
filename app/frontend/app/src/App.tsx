@@ -7,6 +7,7 @@ import AccountSettingsPage from "./pages/accountPages/AccountSettingsPage";
 import DepositPage from "./pages/accountPages/DepositPage";
 import PaymentPage from "./pages/accountPages/PaymentPage";
 import TransferPage from "./pages/accountPages/TransferPage";
+import CreditCardPage from "./pages/cardPages/CreditCardPage";
 import ChangePassword from "./pages/ChangePassword";
 import Dashbord from "./pages/Dashbord";
 import EditProfile from "./pages/EditProfile";
@@ -39,6 +40,10 @@ function App() {
             <Route path="/editprofile/:userId" element={<EditProfile />} />
             <Route path="/accounts/user/:userId" element={<AccountPages />} />
             <Route path="/accounts/deposit/:userId" element={<DepositPage />} />
+            <Route
+              path="/accounts/creditcard/:userId"
+              element={<CreditCardPage />}
+            />
             <Route
               path="/accounts/transactions/:userId"
               element={<TransactionsPage />}
