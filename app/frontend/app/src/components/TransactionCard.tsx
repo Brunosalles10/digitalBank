@@ -29,7 +29,7 @@ const TransactionCard = ({ transaction }: Props) => {
   };
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow border border-gray-200">
+    <div className="bg-white p-4 rounded-lg shadow border-2 border-gray-200 hover:bg-gray-50 transition">
       <div className={`font-semibold text-lg ${colorMap[transactionType]}`}>
         {typeMap[transactionType]}
       </div>

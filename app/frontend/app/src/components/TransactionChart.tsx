@@ -41,7 +41,7 @@ const TransactionChart = ({ transactions }: Props) => {
     .filter((item) => item.value > 0);
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow-md border">
+    <div className="bg-white p-6 rounded-xl shadow-md border-2 border-violet-800 hover:bg-violet-50 transition">
       <h3 className="text-lg font-semibold text-gray-700 mb-4">
         Distribuição das Transações
       </h3>

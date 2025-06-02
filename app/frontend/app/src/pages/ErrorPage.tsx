@@ -8,10 +8,10 @@ const ErrorPage = () => {
         Algo deu errado. Página não encontrada ou erro interno.
       </p>
       <Link
-        to="/"
+        to="/dashboard/userId"
         className="bg-violet-700 text-white px-6 py-3 rounded-lg hover:bg-violet-600 transition"
       >
-        Voltar para a Home
+        Voltar para a Dashboard
       </Link>
     </div>
   );

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { FaArrowDown, FaArrowUp } from "react-icons/fa";
+import { BsReceiptCutoff } from "react-icons/bs";
+import { FaExchangeAlt, FaPiggyBank } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { getErrorMessage } from "../../hooks/Errors";
 import api from "../../services/api";
@@ -27,7 +28,6 @@ const TransactionList = () => {
     try {
       setLoading(true);
       const { data } = await api.get("/transactions");
-      // Ordenar pela data e pegar os 5 mais recentes
       const sorted = [...data]
         .sort(
           (a, b) =>
@@ -46,6 +46,19 @@ const TransactionList = () => {
     fetchTransactions();
   }, []);
 
+  const renderIcon = (type: string) => {
+    switch (type) {
+      case "deposit":
+        return <FaPiggyBank size={18} />;
+      case "transfer":
+        return <FaExchangeAlt size={18} />;
+      case "payment":
+        return <BsReceiptCutoff size={18} />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200">
       <div className="flex justify-between items-center mb-5">
@@ -53,7 +66,7 @@ const TransactionList = () => {
           Transações Recentes
         </h3>
         <Link
-          to="/transactions"
+          to="/accounts/transactions/userId"
           className="text-sm text-violet-700 font-medium hover:underline"
         >
           Ver todas
@@ -79,11 +92,7 @@ const TransactionList = () => {
                       : "bg-blue-100 text-blue-600"
                   }`}
                 >
-                  {item.transactionType === "deposit" ? (
-                    <FaArrowDown />
-                  ) : (
-                    <FaArrowUp />
-                  )}
+                  {renderIcon(item.transactionType)}
                 </div>
                 <div>
                   <p className="text-gray-900 font-medium">

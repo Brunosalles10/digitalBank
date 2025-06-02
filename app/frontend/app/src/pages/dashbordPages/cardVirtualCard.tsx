@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import cardImage from "../../assets/card.png";
+import cardImage from "../../assets/card1.png";
 
 const CardVirtualCard = () => {
   return (
@@ -9,7 +9,7 @@ const CardVirtualCard = () => {
         <img
           src={cardImage}
           alt="Cartão Virtual"
-          className="rounded-xl shadow-md mb-4 hover:scale-105 transition"
+          className="rounded-xl shadow-md mb-4 hover:scale-105 transition w-100 h-55 object-cover mx-auto"
         />
       </Link>
       <Link

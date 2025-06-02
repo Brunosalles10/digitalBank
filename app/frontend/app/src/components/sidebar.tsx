@@ -4,7 +4,7 @@ import {
   FaCreditCard,
   FaHome,
   FaLock,
-  FaLongArrowAltUp,
+  FaSignOutAlt,
   FaUniversity,
   FaUsers,
 } from "react-icons/fa";
@@ -15,7 +15,7 @@ import { useAuth } from "../contexts/AuthContext";
 const Sidebar = () => {
   const { logout } = useAuth();
   return (
-    <aside className="w-64 min-h-screen bg-violet-700 text-white flex flex-col justify-between py-6 px-4">
+    <aside className="w-64 flex-shrink-0 min-h-screen bg-violet-700 text-white flex flex-col justify-between py-6 px-4">
       {/* TOPO: LOGO */}
       <div>
         <div className="flex items-center gap-2 mb-10 px-2">
@@ -75,8 +75,8 @@ const Sidebar = () => {
             onClick={logout}
             className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-violet-500 transition"
           >
-            <FaLongArrowAltUp />
-            Sair
+            <FaSignOutAlt className="text-xl text-red-500" />
+            <span className="ml-2">Sair</span>
           </Link>
         </nav>
       </div>
