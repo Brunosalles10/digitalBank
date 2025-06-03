@@ -105,7 +105,7 @@ export const getAccountByUserId = async (
       where: { userId: req.params.userId },
     });
     if (accounts.length === 0) {
-      return res.status(404).json({ error: "No accounts found for this user" });
+      return res.status(404).json({ error: "Voce ainda não possui conta" });
     }
     return res.status(200).json(accounts);
   } catch (error) {

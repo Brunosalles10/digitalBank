@@ -2,7 +2,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import { getErrorMessage } from "../hooks/Errors";
+import { getErrorMessage, isAuthError } from "../hooks/Errors";
 import api from "../services/api";
 
 const Login = () => {
@@ -15,26 +15,43 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    toast.error("");
 
+    // Validação simples
     if (!email || !password) {
       toast.error("Por favor, preencha todos os campos.");
       setLoading(false);
       return;
     }
+    // Validação de email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      toast.error("Por favor, insira um email válido.");
+      setLoading(false);
+      return;
+    }
     try {
       const response = await api.post("/login", {
-        email,
+        email: email.trim(),
         password,
       });
       const { token, user } = response.data;
+      if (!token || !user) {
+        toast.error("Erro ao fazer login. Tente novamente.");
+        setLoading(false);
+        return;
+      }
+      // Armazenar o token no localStorage
       login(token, user.id.toString(), user.name);
 
       setEmail("");
       setPassword("");
       navigate(`/dashboard/${user.id}`);
     } catch (error) {
-      toast.error(getErrorMessage(error));
+      if (isAuthError(error)) {
+        toast.error("Email ou senha incorretos. Tente novamente.");
+      } else {
+        toast.error(getErrorMessage(error));
+      }
     } finally {
       setLoading(false);
     }
@@ -51,7 +68,6 @@ const Login = () => {
         </p>
 
         <form className="space-y-6" onSubmit={handleSubmit}>
-          {/* Nome */}
           {/* Email */}
           <div>
             <label
@@ -63,11 +79,14 @@ const Login = () => {
             <input
               type="email"
               id="email"
+              name="email"
+              autoComplete="email"
               placeholder="seuemail@email.com"
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              disabled={loading}
             />
           </div>
 
@@ -82,11 +101,14 @@ const Login = () => {
             <input
               type="password"
               id="password"
+              name="password"
+              autoComplete="current-password"
               placeholder="••••••••"
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              disabled={loading}
             />
           </div>
 
@@ -96,7 +118,7 @@ const Login = () => {
             disabled={loading}
             className="w-full bg-violet-700 text-white py-3 rounded-lg font-semibold hover:bg-violet-400 transition duration-500 cursor-pointer"
           >
-            Entrar
+            {loading ? "Entrando..." : "Entrar"}
           </button>
         </form>
 
