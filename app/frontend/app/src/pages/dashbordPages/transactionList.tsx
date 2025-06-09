@@ -3,15 +3,23 @@ import toast from "react-hot-toast";
 import { BsReceiptCutoff } from "react-icons/bs";
 import { FaExchangeAlt, FaPiggyBank } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 import { getErrorMessage } from "../../hooks/Errors";
 import api from "../../services/api";
 
 type Transaction = {
   id: number;
-  transactionType: "deposit" | "transfer" | "payment";
-  description: string;
+  senderAccountId: number;
+  receiverAccountId: number;
   amount: number;
+  transactionType: "deposit" | "transfer" | "payment";
+  description?: string;
   createdAt: string;
+};
+
+type Account = {
+  id: number;
+  userId: string;
 };
 
 const typeLabels = {
@@ -21,30 +29,52 @@ const typeLabels = {
 };
 
 const TransactionList = () => {
+  const { userId } = useAuth();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const fetchTransactions = async () => {
-    try {
-      setLoading(true);
-      const { data } = await api.get("/transactions");
-      const sorted = [...data]
-        .sort(
-          (a, b) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        )
-        .slice(0, 5);
-      setTransactions(sorted);
-    } catch (err) {
-      toast.error(getErrorMessage(err));
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchTransactions();
-  }, []);
+    const fetchTransactions = async () => {
+      try {
+        setLoading(true);
+
+        // Busca contas do usuário
+        const accountsRes = await api.get(`/accounts/user/${userId}`);
+        const accountIds: number[] = accountsRes.data.map(
+          (acc: Account) => acc.id
+        );
+
+        // Busca todas as transações
+        const transRes = await api.get("/transactions");
+        const allTransactions: Transaction[] = transRes.data;
+
+        // Filtra apenas transações relacionadas ao usuário
+        const userTransactions = allTransactions.filter(
+          (t) =>
+            accountIds.includes(t.senderAccountId) ||
+            accountIds.includes(t.receiverAccountId)
+        );
+
+        // Ordena por data mais recente e pega apenas as 5 primeiras
+        const sorted = [...userTransactions]
+          .sort(
+            (a, b) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          )
+          .slice(0, 5);
+
+        setTransactions(sorted);
+      } catch (err) {
+        toast.error(getErrorMessage(err));
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (userId) {
+      fetchTransactions();
+    }
+  }, [userId]);
 
   const renderIcon = (type: string) => {
     switch (type) {
@@ -75,6 +105,10 @@ const TransactionList = () => {
 
       {loading ? (
         <p className="text-gray-500 text-sm">Carregando transações...</p>
+      ) : transactions.length === 0 ? (
+        <p className="text-gray-500 text-sm text-center py-4">
+          Nenhuma transação encontrada.
+        </p>
       ) : (
         <ul className="divide-y divide-gray-200">
           {transactions.map((item) => (
@@ -98,6 +132,11 @@ const TransactionList = () => {
                   <p className="text-gray-900 font-medium">
                     {typeLabels[item.transactionType]}
                   </p>
+                  {item.description && (
+                    <p className="text-xs text-gray-400 truncate max-w-32">
+                      {item.description}
+                    </p>
+                  )}
                   <p className="text-sm text-gray-500">
                     {new Date(item.createdAt).toLocaleString("pt-BR")}
                   </p>
