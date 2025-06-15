@@ -14,7 +14,7 @@
   "dependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.9",
-    "bcrypt": "^5.1.1",
+    "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
@@ -24,6 +24,7 @@
   },
   "type": "commonjs",
   "devDependencies": {
+    "@types/bcryptjs": "^3.0.0",
     "@types/cors": "^2.8.18",
     "@types/express": "^4.17.21",
     "@types/node": "^22.14.1",
