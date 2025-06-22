@@ -8,10 +8,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    ports:
-      - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
@@ -24,12 +20,10 @@ services:
     container_name: backend
     depends_on:
       - mysql
-    ports:
-      - "3000:3000"
     env_file:
       - ./backend/.env
     volumes:
-      - ./backend:/usr/src/app
+      - ./backend:/app
     networks:
       - bank-network
 
@@ -38,10 +32,8 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        - VITE_API_URL=http://localhost:3000
+        REACT_APP_BACKEND_URI: https://SolidBank.local/api/
     container_name: frontend
-    ports:
-      - "5173:5173"
     stdin_open: true
     tty: true
     depends_on:
@@ -50,10 +42,12 @@ services:
       - bank-network
 
   nginx:
+    build: ./nginx
     image: nginx:latest
     container_name: nginx
     ports:
-      - "80:80"
+      - 80:80
+      - 443:443
     depends_on:
       - frontend
       - backend
