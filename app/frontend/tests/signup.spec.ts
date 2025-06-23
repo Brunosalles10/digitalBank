@@ -1,9 +1,13 @@
-import { expect, test } from "@playwright/test";
+import { chromium, expect, test } from "@playwright/test";
 
 test.describe("Cadastro de usuário", () => {
-  const baseUrl = "http://localhost:5173";
+  const baseUrl = "https://solidbank.local";
 
-  test("TESTE DE CADASTRO", async ({ page }) => {
+  test("TESTE DE CADASTRO", async () => {
+    const browser = await chromium.launch();
+    const context = await browser.newContext({ ignoreHTTPSErrors: true });
+    const page = await context.newPage();
+
     await page.goto(`${baseUrl}/signup`);
 
     await page.getByLabel("Nome completo").fill("Bruno Salles");
@@ -16,14 +20,26 @@ test.describe("Cadastro de usuário", () => {
     await expect(page.getByText("Senha Forte")).toBeVisible();
 
     await page.getByRole("button", { name: "Criar Conta" }).click();
+
+    await browser.close();
   });
 
-  test("Erro ao deixar campos vazios", async ({ page }) => {
+  test("Erro ao deixar campos vazios", async () => {
+    const browser = await chromium.launch();
+    const context = await browser.newContext({ ignoreHTTPSErrors: true });
+    const page = await context.newPage();
+
     await page.goto(`${baseUrl}/signup`);
     await page.getByRole("button", { name: "Criar Conta" }).click();
+
+    await browser.close();
   });
 
-  test("Erro ao usar senha fraca", async ({ page }) => {
+  test("Erro ao usar senha fraca", async () => {
+    const browser = await chromium.launch();
+    const context = await browser.newContext({ ignoreHTTPSErrors: true });
+    const page = await context.newPage();
+
     await page.goto(`${baseUrl}/signup`);
 
     await page.getByLabel("Nome completo").fill("Bruno");
@@ -35,9 +51,15 @@ test.describe("Cadastro de usuário", () => {
 
     await page.getByRole("button", { name: "Criar Conta" }).click();
     await expect(page.getByText("A senha precisa ser forte.")).toBeVisible();
+
+    await browser.close();
   });
 
-  test("Erro ao usar email inválido", async ({ page }) => {
+  test("Erro ao usar email inválido", async () => {
+    const browser = await chromium.launch();
+    const context = await browser.newContext({ ignoreHTTPSErrors: true });
+    const page = await context.newPage();
+
     await page.goto(`${baseUrl}/signup`);
 
     await page.getByLabel("Nome completo").fill("Bruno");
@@ -48,9 +70,15 @@ test.describe("Cadastro de usuário", () => {
     await page.getByLabel("Confirmar senha", { exact: true }).fill("123");
 
     await page.getByRole("button", { name: "Criar Conta" }).click();
+
+    await browser.close();
   });
 
-  test("Erro se senhas não coincidirem", async ({ page }) => {
+  test("Erro se senhas não coincidirem", async () => {
+    const browser = await chromium.launch();
+    const context = await browser.newContext({ ignoreHTTPSErrors: true });
+    const page = await context.newPage();
+
     await page.goto(`${baseUrl}/signup`);
 
     await page.getByLabel("Nome completo").fill("Bruno");
@@ -64,5 +92,7 @@ test.describe("Cadastro de usuário", () => {
 
     await page.getByRole("button", { name: "Criar Conta" }).click();
     await expect(page.getByText("As senhas não coincidem.")).toBeVisible();
+
+    await browser.close();
   });
 });
